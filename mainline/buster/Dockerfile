@@ -5,6 +5,8 @@ LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 ENV NGINX_VERSION   1.17.5
 ENV NJS_VERSION     0.3.6
 ENV PKG_RELEASE     1~buster
+ENV NGINX_CNFG_FILE NONE 
+ENV _NGINX_CNFG_FILE /srv/oauth2-token-introspection.conf
 
 RUN set -x \
 # create nginx user/group first, to be consistent throughout docker variants
@@ -29,6 +31,7 @@ RUN set -x \
     && dpkgArch="$(dpkg --print-architecture)" \
     && nginxPackages=" \
         nginx=${NGINX_VERSION}-${PKG_RELEASE} \
+        nginx-extras=${NGINX_VERSION}-${PKG_RELEASE} \
         nginx-module-xslt=${NGINX_VERSION}-${PKG_RELEASE} \
         nginx-module-geoip=${NGINX_VERSION}-${PKG_RELEASE} \
         nginx-module-image-filter=${NGINX_VERSION}-${PKG_RELEASE} \
@@ -92,12 +95,12 @@ RUN set -x \
         && rm -rf "$tempDir" /etc/apt/sources.list.d/temp.list; \
     fi
 
+COPY "${NGINX_CNFG_FILE}" "${_NGINX_CNFG_FILE}"
+
 # forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
     && ln -sf /dev/stderr /var/log/nginx/error.log
 
-EXPOSE 80
-
 STOPSIGNAL SIGTERM
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["nginx", "-c", "${_NGINX_CNFG_FILE}" , "-g", "daemon off;"]
