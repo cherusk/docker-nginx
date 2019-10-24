@@ -30,13 +30,30 @@ RUN set -x \
     apt-get remove --purge --auto-remove -y gnupg1 && rm -rf /var/lib/apt/lists/* \
     && dpkgArch="$(dpkg --print-architecture)" \
     && nginxPackages=" \
-        nginx=${NGINX_VERSION}-${PKG_RELEASE} \
-        nginx-extras=${NGINX_VERSION}-${PKG_RELEASE} \
-        nginx-module-xslt=${NGINX_VERSION}-${PKG_RELEASE} \
-        nginx-module-geoip=${NGINX_VERSION}-${PKG_RELEASE} \
-        nginx-module-image-filter=${NGINX_VERSION}-${PKG_RELEASE} \
-        nginx-module-njs=${NGINX_VERSION}.${NJS_VERSION}-${PKG_RELEASE} \
-    " \
+        nginx               \
+        nginx-extras        \
+        nginx-module-xslt   \
+        nginx-module-geoip  \
+        nginx-module-image-filter \
+        nginx-module-njs \
+        libnginx-mod-http-auth-pam \
+        libnginx-mod-http-cache-purge \
+        libnginx-mod-http-dav-ext \
+        libnginx-mod-http-echo \
+        libnginx-mod-http-fancyindex \
+        libnginx-mod-http-geoip \
+        libnginx-mod-http-headers-more-filter \
+        libnginx-mod-http-image-filter \
+        libnginx-mod-http-lua \
+        libnginx-mod-http-perl \
+        libnginx-mod-http-subs-filter \
+        libnginx-mod-http-uploadprogress \
+        libnginx-mod-http-upstream-fair \
+        libnginx-mod-http-xslt-filter \
+        libnginx-mod-mail \
+        libnginx-mod-nchan \
+        libnginx-mod-stream \
+        nginx-common" \
     && case "$dpkgArch" in \
         amd64|i386) \
 # arches officialy built by upstream
